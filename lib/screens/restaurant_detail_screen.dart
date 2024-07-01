@@ -11,14 +11,28 @@ class RestaurantDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(restaurant.name),
+        centerTitle: true,
+        backgroundColor: Colors.amber.shade700,
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(restaurant.pictureID),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  restaurant.pictureID,
+                  width: MediaQuery.of(context).size.width,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+              ),
               SizedBox(height: 16.0),
               Text(
                 restaurant.name,
@@ -30,13 +44,26 @@ class RestaurantDetailScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.grey),
               ),
               SizedBox(height: 16.0),
-              Text(
-                'Rating: ${restaurant.rating}',
-                style: TextStyle(fontSize: 18),
+              Row(
+                children: [
+                  SizedBox(width: 4),
+                  Icon(
+                    Icons.star,
+                    color: Colors.amber.shade700,
+                  ),
+                  Text(
+                    '${restaurant.rating}',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber.shade700),
+                  ),
+                ],
               ),
               SizedBox(height: 16.0),
               Text(
                 restaurant.description,
+                textAlign: TextAlign.justify,
                 maxLines: 10,
                 overflow: TextOverflow.ellipsis,
               ),
