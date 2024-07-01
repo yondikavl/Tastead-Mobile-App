@@ -12,7 +12,7 @@ class RestaurantDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(restaurant.name),
         centerTitle: true,
-        backgroundColor: Colors.amber.shade700,
+        backgroundColor: Colors.amber.shade800,
         titleTextStyle: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 20,
@@ -41,14 +41,23 @@ class RestaurantDetailScreen extends StatelessWidget {
                     const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8.0),
-              Text(
-                restaurant.city,
-                style: const TextStyle(color: Colors.grey),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.place,
+                    color: Colors.grey,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4.0),
+                  Text(
+                    restaurant.city,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
               ),
               const SizedBox(height: 16.0),
               Row(
                 children: [
-                  const SizedBox(width: 4),
                   Icon(
                     Icons.star,
                     color: Colors.amber.shade700,
