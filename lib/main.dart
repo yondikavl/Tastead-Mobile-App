@@ -8,6 +8,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RestaurantProvider()),
       ],
       child: MaterialApp(
-        title: 'Restaurant App',
+        title: 'Tastead',
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),

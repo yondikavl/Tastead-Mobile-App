@@ -4,7 +4,7 @@ import '../models/restaurant.dart';
 class RestaurantDetailScreen extends StatelessWidget {
   final Restaurant restaurant;
 
-  RestaurantDetailScreen(this.restaurant);
+  const RestaurantDetailScreen(this.restaurant, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,11 @@ class RestaurantDetailScreen extends StatelessWidget {
           fontWeight: FontWeight.bold,
           fontSize: 20,
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,20 +34,21 @@ class RestaurantDetailScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 restaurant.name,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 restaurant.city,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Row(
                 children: [
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Icon(
                     Icons.star,
                     color: Colors.amber.shade700,
@@ -60,37 +62,37 @@ class RestaurantDetailScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 restaurant.description,
                 textAlign: TextAlign.justify,
                 maxLines: 10,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 16.0),
-              Text(
+              const SizedBox(height: 16.0),
+              const Text(
                 'Foods',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               ...restaurant.menus.foods.map((food) {
                 return ListTile(
-                  leading: Icon(Icons.fastfood),
+                  leading: const Icon(Icons.fastfood),
                   title: Text(food.name),
                 );
-              }).toList(),
-              SizedBox(height: 16.0),
-              Text(
+              }),
+              const SizedBox(height: 16.0),
+              const Text(
                 'Drinks',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               ...restaurant.menus.drinks.map((drink) {
                 return ListTile(
-                  leading: Icon(Icons.local_drink),
+                  leading: const Icon(Icons.local_drink),
                   title: Text(drink.name),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),
