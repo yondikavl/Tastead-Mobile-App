@@ -3,7 +3,14 @@ import 'package:provider/provider.dart';
 import '../providers/restaurant_provider.dart';
 import '../widgets/restaurant_item.dart';
 
-class RestaurantListScreen extends StatelessWidget {
+class RestaurantListScreen extends StatefulWidget {
+  @override
+  _RestaurantListScreenState createState() => _RestaurantListScreenState();
+}
+
+class _RestaurantListScreenState extends State<RestaurantListScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,25 +21,51 @@ class RestaurantListScreen extends StatelessWidget {
             height: 200, // Tinggi hero section
             padding: const EdgeInsets.all(24),
             color: Colors.amber.shade800,
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   'Tastead',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'Rekomendasi restoran favoritmu!',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,
                   ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Cari restoran...',
+                    hintStyle: TextStyle(color: Colors.black54),
+                    prefixIcon: Icon(Icons.search, color: Colors.black),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                  ),
+                  onSubmitted: (query) {
+                    if (query.isNotEmpty) {
+                      Provider.of<RestaurantProvider>(context, listen: false)
+                          .searchRestaurants(query);
+                    } else {
+                      Provider.of<RestaurantProvider>(context, listen: false)
+                          .fetchRestaurants();
+                    }
+                  },
                 ),
               ],
             ),
@@ -50,13 +83,16 @@ class RestaurantListScreen extends StatelessWidget {
                 } else {
                   return Consumer<RestaurantProvider>(
                     builder: (ctx, restaurantData, _) {
-                      if (restaurantData.restaurants.isEmpty) {
+                      final restaurants = _searchController.text.isEmpty
+                          ? restaurantData.restaurants
+                          : restaurantData.searchResults;
+                      if (restaurants.isEmpty) {
                         return Center(child: Text('Restoran tidak ditemukan.'));
                       } else {
                         return ListView.builder(
-                          itemCount: restaurantData.restaurants.length,
+                          itemCount: restaurants.length,
                           itemBuilder: (ctx, index) =>
-                              RestaurantItem(restaurantData.restaurants[index]),
+                              RestaurantItem(restaurants[index]),
                         );
                       }
                     },

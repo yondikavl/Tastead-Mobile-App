@@ -5,8 +5,12 @@ import '../models/restaurant.dart';
 
 class RestaurantProvider with ChangeNotifier {
   List<Restaurant> _restaurants = [];
+  List<Restaurant> _searchResults = [];
+  Restaurant? _restaurantDetail;
 
   List<Restaurant> get restaurants => _restaurants;
+  List<Restaurant> get searchResults => _searchResults;
+  Restaurant? get restaurantDetail => _restaurantDetail;
 
   Future<void> fetchRestaurants() async {
     const url = 'https://restaurant-api.dicoding.dev/list';
@@ -14,7 +18,6 @@ class RestaurantProvider with ChangeNotifier {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
         if (data != null && data['restaurants'] != null) {
           _restaurants = List<Restaurant>.from(
             data['restaurants'].map((item) => Restaurant.fromJson(item)),
@@ -22,7 +25,6 @@ class RestaurantProvider with ChangeNotifier {
         } else {
           throw Exception('No data found');
         }
-
         notifyListeners();
       } else {
         throw Exception(
@@ -34,8 +36,26 @@ class RestaurantProvider with ChangeNotifier {
     }
   }
 
-  Restaurant findRestaurantById(String id) {
-    return _restaurants.firstWhere((restaurant) => restaurant.id == id);
+  Future<void> fetchRestaurantDetail(String id) async {
+    final url = 'https://restaurant-api.dicoding.dev/detail/$id';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data != null && data['restaurant'] != null) {
+          _restaurantDetail = Restaurant.fromJson(data['restaurant']);
+        } else {
+          throw Exception('No data found');
+        }
+        notifyListeners();
+      } else {
+        throw Exception(
+            'Failed to load data. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+      throw error;
+    }
   }
 
   Future<void> searchRestaurants(String query) async {
@@ -44,15 +64,13 @@ class RestaurantProvider with ChangeNotifier {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
         if (data != null && data['restaurants'] != null) {
-          _restaurants = List<Restaurant>.from(
+          _searchResults = List<Restaurant>.from(
             data['restaurants'].map((item) => Restaurant.fromJson(item)),
           );
         } else {
           throw Exception('No data found');
         }
-
         notifyListeners();
       } else {
         throw Exception('Failed to load data');
