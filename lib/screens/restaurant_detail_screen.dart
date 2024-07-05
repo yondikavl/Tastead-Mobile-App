@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import '../models/restaurant.dart';
+import 'package:provider/provider.dart';
+import '../providers/restaurant_provider.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
-  final Restaurant restaurant;
+  final String restaurantId;
 
-  const RestaurantDetailScreen(this.restaurant, {super.key});
+  const RestaurantDetailScreen(this.restaurantId, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final restaurant = Provider.of<RestaurantProvider>(context, listen: false)
+        .findRestaurantById(restaurantId);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(restaurant.name),
@@ -28,7 +32,7 @@ class RestaurantDetailScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(
-                  restaurant.pictureID,
+                  'https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}',
                   width: MediaQuery.of(context).size.width,
                   height: 200,
                   fit: BoxFit.cover,

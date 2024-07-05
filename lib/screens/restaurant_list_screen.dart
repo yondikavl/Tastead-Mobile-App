@@ -45,7 +45,8 @@ class RestaurantListScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Gagal loading data'));
+                  return Center(
+                      child: Text('Gagal loading data: ${snapshot.error}'));
                 } else {
                   return Consumer<RestaurantProvider>(
                     builder: (ctx, restaurantData, _) {

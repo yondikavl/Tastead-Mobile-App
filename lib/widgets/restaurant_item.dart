@@ -30,7 +30,7 @@ class RestaurantItem extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1 / 1,
                 child: Image.network(
-                  restaurant.pictureID,
+                  'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -54,7 +54,7 @@ class RestaurantItem extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => RestaurantDetailScreen(restaurant),
+                builder: (context) => RestaurantDetailScreen(restaurant.id),
               ),
             );
           },

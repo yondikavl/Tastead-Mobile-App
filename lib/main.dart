@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RestaurantProvider()),
       ],
       child: MaterialApp(
-        title: 'Tasteat',
+        title: 'Tastead',
         home: RestaurantListScreen(),
       ),
     );
