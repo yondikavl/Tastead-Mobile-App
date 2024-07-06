@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/favorite_restaurant.dart';
 import '../providers/restaurant_provider.dart';
+import '../providers/favorite_provider.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String restaurantId;
@@ -28,8 +30,8 @@ class RestaurantDetailScreen extends StatelessWidget {
             body: Center(child: Text('Gagal memuat data: ${snapshot.error}')),
           );
         } else {
-          return Consumer<RestaurantProvider>(
-            builder: (ctx, restaurantProvider, _) {
+          return Consumer2<RestaurantProvider, FavoriteProvider>(
+            builder: (ctx, restaurantProvider, favoriteProvider, _) {
               final restaurant = restaurantProvider.restaurantDetail;
               if (restaurant == null) {
                 return Scaffold(
@@ -39,6 +41,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                   body: const Center(child: Text('Data tidak ditemukan')),
                 );
               }
+              final isFavorite = favoriteProvider.isFavorite(restaurant.id);
               return Scaffold(
                 appBar: AppBar(
                   title: Text(restaurant.name),
@@ -49,6 +52,29 @@ class RestaurantDetailScreen extends StatelessWidget {
                     fontSize: 20,
                   ),
                   iconTheme: const IconThemeData(color: Colors.white),
+                  actions: [
+                    IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        final favoriteRestaurant = FavoriteRestaurant(
+                          id: restaurant.id,
+                          name: restaurant.name,
+                          description: restaurant.description,
+                          pictureId: restaurant.pictureId,
+                          city: restaurant.city,
+                          rating: restaurant.rating,
+                        );
+                        if (isFavorite) {
+                          favoriteProvider.removeFavorite(restaurant.id);
+                        } else {
+                          favoriteProvider.addFavorite(favoriteRestaurant);
+                        }
+                      },
+                    ),
+                  ],
                 ),
                 body: SingleChildScrollView(
                   child: Padding(
@@ -111,7 +137,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 16.0),
                         const Text(
-                          'Foods',
+                          'Makanan',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -124,7 +150,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                         }),
                         const SizedBox(height: 16.0),
                         const Text(
-                          'Drinks',
+                          'Minuman',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

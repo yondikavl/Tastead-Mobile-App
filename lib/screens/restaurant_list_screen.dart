@@ -7,22 +7,37 @@ class RestaurantListScreen extends StatefulWidget {
   const RestaurantListScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _RestaurantListScreenState createState() => _RestaurantListScreenState();
 }
 
 class _RestaurantListScreenState extends State<RestaurantListScreen> {
   final TextEditingController _searchController = TextEditingController();
 
+  Future<void> _refreshRestaurants() async {
+    await Provider.of<RestaurantProvider>(context, listen: false)
+        .fetchRestaurants();
+    setState(() {}); // Trigger a rebuild to refresh the list
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.amber.shade800,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshRestaurants,
+            color: Colors.white,
+          ),
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            height: 200, // Tinggi hero section
-            padding: const EdgeInsets.all(24),
+            height: 170,
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
             color: Colors.amber.shade800,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +64,7 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Cari restoran...',
-                    hintStyle: const TextStyle(color: Colors.black54),
+                    hintStyle: const TextStyle(color: Colors.black45),
                     prefixIcon: const Icon(Icons.search, color: Colors.black),
                     filled: true,
                     fillColor: Colors.white,
@@ -68,6 +83,7 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                       Provider.of<RestaurantProvider>(context, listen: false)
                           .fetchRestaurants();
                     }
+                    setState(() {}); // Trigger a rebuild to refresh the list
                   },
                 ),
               ],

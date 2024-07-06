@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
-import '../models/restaurant.dart';
+import 'package:tastead/models/favorite_restaurant.dart';
 import '../screens/restaurant_detail_screen.dart';
 
 class RestaurantItem extends StatelessWidget {
-  final Restaurant restaurant;
+  final dynamic restaurant;
 
   const RestaurantItem(this.restaurant, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isFavorite = restaurant is FavoriteRestaurant;
+    final pictureId = isFavorite ? restaurant.pictureId : restaurant.pictureId;
+    final name = isFavorite ? restaurant.name : restaurant.name;
+    final city = isFavorite ? restaurant.city : restaurant.city;
+    final rating = isFavorite ? restaurant.rating : restaurant.rating;
+    final id = isFavorite ? restaurant.id : restaurant.id;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
       decoration: BoxDecoration(
@@ -30,22 +37,22 @@ class RestaurantItem extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1 / 1,
                 child: Image.network(
-                  'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
+                  'https://restaurant-api.dicoding.dev/images/small/$pictureId',
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
           title: Text(
-            restaurant.name,
+            name,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            restaurant.city,
+            city,
             style: const TextStyle(color: Colors.grey),
           ),
           trailing: Text(
-            restaurant.rating.toString(),
+            rating.toString(),
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -54,7 +61,7 @@ class RestaurantItem extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => RestaurantDetailScreen(restaurant.id),
+                builder: (context) => RestaurantDetailScreen(id),
               ),
             );
           },
