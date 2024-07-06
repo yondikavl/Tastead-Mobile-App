@@ -4,7 +4,7 @@ import './providers/restaurant_provider.dart';
 import './screens/restaurant_list_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => RestaurantProvider()),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Tastead',
         home: RestaurantListScreen(),
       ),

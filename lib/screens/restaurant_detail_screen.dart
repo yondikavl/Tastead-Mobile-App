@@ -121,7 +121,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                             leading: const Icon(Icons.fastfood),
                             title: Text(food.name),
                           );
-                        }).toList(),
+                        }),
                         const SizedBox(height: 16.0),
                         const Text(
                           'Drinks',
@@ -134,7 +134,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                             leading: const Icon(Icons.local_drink),
                             title: Text(drink.name),
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),

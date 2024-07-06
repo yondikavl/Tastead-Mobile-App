@@ -5,7 +5,7 @@ import '../screens/restaurant_detail_screen.dart';
 class RestaurantItem extends StatelessWidget {
   final Restaurant restaurant;
 
-  RestaurantItem(this.restaurant);
+  const RestaurantItem(this.restaurant, {super.key});
 
   @override
   Widget build(BuildContext context) {

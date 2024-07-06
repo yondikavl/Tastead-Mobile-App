@@ -4,7 +4,10 @@ import '../providers/restaurant_provider.dart';
 import '../widgets/restaurant_item.dart';
 
 class RestaurantListScreen extends StatefulWidget {
+  const RestaurantListScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _RestaurantListScreenState createState() => _RestaurantListScreenState();
 }
 
@@ -46,8 +49,8 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Cari restoran...',
-                    hintStyle: TextStyle(color: Colors.black54),
-                    prefixIcon: Icon(Icons.search, color: Colors.black),
+                    hintStyle: const TextStyle(color: Colors.black54),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black),
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -76,7 +79,7 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                   .fetchRestaurants(),
               builder: (ctx, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(
                       child: Text('Gagal loading data: ${snapshot.error}'));
@@ -87,7 +90,8 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                           ? restaurantData.restaurants
                           : restaurantData.searchResults;
                       if (restaurants.isEmpty) {
-                        return Center(child: Text('Restoran tidak ditemukan.'));
+                        return const Center(
+                            child: Text('Restoran tidak ditemukan.'));
                       } else {
                         return ListView.builder(
                           itemCount: restaurants.length,

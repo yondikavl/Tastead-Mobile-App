@@ -14,70 +14,53 @@ class RestaurantProvider with ChangeNotifier {
 
   Future<void> fetchRestaurants() async {
     const url = 'https://restaurant-api.dicoding.dev/list';
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data != null && data['restaurants'] != null) {
-          _restaurants = List<Restaurant>.from(
-            data['restaurants'].map((item) => Restaurant.fromJson(item)),
-          );
-        } else {
-          throw Exception('No data found');
-        }
-        notifyListeners();
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data != null && data['restaurants'] != null) {
+        _restaurants = List<Restaurant>.from(
+          data['restaurants'].map((item) => Restaurant.fromJson(item)),
+        );
       } else {
-        throw Exception(
-            'Failed to load data. Status code: ${response.statusCode}');
+        throw Exception('Data tidak ditemukan');
       }
-    } catch (error) {
-      print('Error fetching data: $error');
-      throw error;
+      notifyListeners();
+    } else {
+      throw Exception('Gagal loading data. Status: ${response.statusCode}');
     }
   }
 
   Future<void> fetchRestaurantDetail(String id) async {
     final url = 'https://restaurant-api.dicoding.dev/detail/$id';
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data != null && data['restaurant'] != null) {
-          _restaurantDetail = Restaurant.fromJson(data['restaurant']);
-        } else {
-          throw Exception('No data found');
-        }
-        notifyListeners();
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data != null && data['restaurant'] != null) {
+        _restaurantDetail = Restaurant.fromJson(data['restaurant']);
       } else {
-        throw Exception(
-            'Failed to load data. Status code: ${response.statusCode}');
+        throw Exception('Data tidak ditemukan');
       }
-    } catch (error) {
-      print('Error fetching data: $error');
-      throw error;
+      notifyListeners();
+    } else {
+      throw Exception('Gagal loading data. Status: ${response.statusCode}');
     }
   }
 
   Future<void> searchRestaurants(String query) async {
     final url = 'https://restaurant-api.dicoding.dev/search?q=$query';
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data != null && data['restaurants'] != null) {
-          _searchResults = List<Restaurant>.from(
-            data['restaurants'].map((item) => Restaurant.fromJson(item)),
-          );
-        } else {
-          throw Exception('No data found');
-        }
-        notifyListeners();
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      if (data != null && data['restaurants'] != null) {
+        _searchResults = List<Restaurant>.from(
+          data['restaurants'].map((item) => Restaurant.fromJson(item)),
+        );
       } else {
-        throw Exception('Failed to load data');
+        throw Exception('Data tidak ditemukan');
       }
-    } catch (error) {
-      print('Error searching restaurants: $error');
-      throw error;
+      notifyListeners();
+    } else {
+      throw Exception('Gagal loading data.');
     }
   }
 }
