@@ -1,5 +1,4 @@
-# restaurant_app
-
+# Tastead
 A new Flutter project.
 
 ## Getting Started
