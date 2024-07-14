@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:tastead/helpers/notification_helper.dart';
 import './providers/restaurant_provider.dart';
 import './providers/favorite_provider.dart';
 import './providers/settings_provider.dart';
@@ -7,7 +9,11 @@ import './screens/restaurant_list_screen.dart';
 import './screens/favorite_list_screen.dart';
 import './screens/settings_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationHelper.initialize();
+  await AndroidAlarmManager.initialize();
+
   runApp(const MyApp());
 }
 

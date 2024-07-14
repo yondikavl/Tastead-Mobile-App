@@ -16,7 +16,7 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
   Future<void> _refreshRestaurants() async {
     await Provider.of<RestaurantProvider>(context, listen: false)
         .fetchRestaurants();
-    setState(() {}); // Trigger a rebuild to refresh the list
+    setState(() {});
   }
 
   @override
@@ -83,7 +83,7 @@ class _RestaurantListScreenState extends State<RestaurantListScreen> {
                       Provider.of<RestaurantProvider>(context, listen: false)
                           .fetchRestaurants();
                     }
-                    setState(() {}); // Trigger a rebuild to refresh the list
+                    setState(() {});
                   },
                 ),
               ],

@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:tastead/services/api_services.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -8,6 +10,9 @@ class NotificationHelper {
 
   static Future<void> initialize() async {
     tz.initializeTimeZones();
+    final String timeZoneName =
+        (await tz.getLocation('Asia/Jakarta')) as String;
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
 
     const initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -18,6 +23,10 @@ class NotificationHelper {
   }
 
   static Future<void> showDailyReminder() async {
+    final restaurants = await ApiService().listRestaurant();
+    var randomIndex = Random().nextInt(restaurants.length);
+    var randomRestaurant = restaurants[randomIndex];
+
     const androidDetails = AndroidNotificationDetails(
       'daily_reminder_channel',
       'Daily Reminder',
@@ -29,12 +38,12 @@ class NotificationHelper {
     await _notificationsPlugin.zonedSchedule(
       0,
       'Daily Reminder',
-      'Check out this restaurant!',
+      'Cek restoran ini: ${randomRestaurant['name']} di ${randomRestaurant['city']}',
       _nextInstanceOf11AM(),
       notificationDetails,
-      androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
+      androidAllowWhileIdle: true,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
